@@ -1,0 +1,57 @@
+skip_handlers: false
+
+cadvisor_user: "root"
+cadvisor_group: "root"
+
+cadvisor_options: []
+cadvisor_port: 9280
+
+cadvisor_dir: "/opt/cadvisor"
+cadvisor_dirs:
+  certs:
+    path: "{{ cadvisor_dir }}/certs"
+  logs:
+    path: "/var/log/cadvisor"
+
+cadvisor_service: |
+  #!/sbin/openrc-run
+
+  description="Cadvisor"
+
+  group="${RC_SVCNAME}"
+  user="${RC_SVCNAME}"
+
+  supervisor="supervise-daemon"
+  pidfile="/run/${RC_SVCNAME}.pid"
+  command="/usr/bin/${RC_SVCNAME}"
+  command_args="--port={{ cadvisor_port }} {{ cadvisor_options | join(' ') }}"
+
+  command_background="true"
+  extra_started_commands="reload"
+
+  output_log="{{ cadvisor_dirs.logs.path }}/cadvisor.log"
+  error_log="{{ cadvisor_dirs.logs.path }}/cadvisor.log"
+
+  depend() {
+    need net
+  }
+
+  reload() {
+    ebegin "Reloading cadvisor"
+    ${supervisor} ${RC_SVCNAME} --signal HUP --pidfile "${PIDFILE}"
+    eend $?
+  }
+
+cadvisor_unit: |
+  [Unit]
+  Description=Cadvisor
+  After=network-online.target
+
+  [Service]
+  Type=simple
+  User={{ cadvisor_user }}
+  Group={{ cadvisor_group }}
+  ExecStart=/usr/bin/cadvisor --port={{ cadvisor_port }} {{ cadvisor_options | join(' ') }}
+
+  [Install]
+  WantedBy=multi-user.target

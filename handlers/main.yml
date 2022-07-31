@@ -1,0 +1,5 @@
+- name: restart cadvisor
+  service:
+    name: cadvisor
+    state: restarted
+  when: not skip_handlers

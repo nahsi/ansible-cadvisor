@@ -1,0 +1,80 @@
+- name: check "cadvisor_version" variable
+  tags: always
+  assert:
+    that:
+      - cadvisor_version is defined
+      - cadvisor_version is string
+      - cadvisor_version | length
+    quiet: true
+
+- name: check "cadvisor_user" variable
+  tags: always
+  assert:
+    that:
+      - cadvisor_user is defined
+      - cadvisor_user is string
+      - cadvisor_user | length
+    quiet: true
+
+- name: check "cadvisor_group" variable
+  tags: always
+  assert:
+    that:
+      - cadvisor_group is defined
+      - cadvisor_group is string
+      - cadvisor_group | length
+    quiet: true
+
+- name: check "cadvisor_groups" variable
+  tags: always
+  assert:
+    that:
+      - cadvisor_groups is iterable
+      - cadvisor_groups is not string
+    quiet: true
+  when: cadvisor_groups is defined
+
+- name: check "cadvisor_dirs" variable
+  tags: always
+  assert:
+    that:
+      - cadvisor_dirs is defined
+      - cadvisor_dirs is mapping
+      - cadvisor_dirs | length
+    quiet: true
+
+- name: check "cadvisor_port" variable
+  tags: always
+  assert:
+    that:
+      - cadvisor_port is defined
+      - cadvisor_port is number
+    quiet: true
+
+- name: check "cadvisor_options" variable
+  tags: always
+  assert:
+    that:
+      - cadvisor_options is defined
+      - cadvisor_options is iterable
+      - cadvisor_options is not string
+    quiet: true
+
+- name: check "cadvisor_service" variable
+  tags: always
+  assert:
+    that:
+      - cadvisor_service is defined
+      - cadvisor_service is string
+      - cadvisor_service | length
+    quiet: true
+  when: ansible_service_mgr == "openrc"
+
+- name: check "cadvisor_unit" variable
+  tags: always
+  assert:
+    that:
+      - cadvisor_unit is defined
+      - cadvisor_unit is string
+      - cadvisor_unit | length
+    quiet: true

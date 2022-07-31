@@ -1,0 +1,85 @@
+- name: download cadvisor to localhost
+  become: false
+  run_once: true
+  delegate_to: localhost
+  get_url:
+    url: "{{ _url }}"
+    dest: "{{ role_path }}/files/cadvisor"
+  register: _download
+  until: _download is succeeded
+  retries: 5
+  delay: 2
+
+- name: create cadvisor system group
+  group:
+    name: "{{ cadvisor_group }}"
+    system: true
+    state: present
+  when: cadvisor_group != "root"
+
+- name: create cadvisor system user
+  user:
+    name: "{{ cadvisor_user }}"
+    system: true
+    shell: "/sbin/nologin"
+    group: "{{ cadvisor_group }}"
+    groups: "{{ cadvisor_groups | default(omit) }}"
+    create_home: false
+    state: present
+  when: cadvisor_group != "root"
+
+- name: create cadvisor directories
+  file:
+    path: "{{ dir.value.path }}"
+    state: directory
+    owner: "{{ dir.group | default(cadvisor_user) }}"
+    group: "{{ dir.group | default(cadvisor_group) }}"
+    mode: "{{ dir.value.mode | default(755) }}"
+  loop: "{{ cadvisor_dirs | dict2items }}"
+  loop_control:
+    loop_var: dir
+    label: "{{ dir.key }}"
+
+- name: propagate cadvisor binary
+  copy:
+    src: "{{ role_path }}/files/cadvisor"
+    dest: "/usr/bin/cadvisor"
+    owner: root
+    group: root
+    mode: 0555
+  notify: restart cadvisor
+
+- name: create cadvisor service file
+  tags: config
+  copy:
+    content: "{{ cadvisor_service }}"
+    dest: "/etc/init.d/cadvisor"
+    owner: root
+    group: root
+    mode: 0755
+  notify: restart cadvisor
+  when: ansible_service_mgr == "openrc"
+
+- name: enable cadvisor
+  service:
+    name: cadvisor
+    enabled: true
+  when: ansible_service_mgr == "openrc"
+
+- name: create cadvisor unit file
+  tags: config
+  copy:
+    content: "{{ cadvisor_unit }}"
+    dest: "/etc/systemd/system/cadvisor.service"
+    owner: root
+    group: root
+    mode: 0755
+  notify: restart cadvisor
+  when: ansible_service_mgr == "systemd"
+
+- name: enable cadvisor
+  systemd:
+    name: cadvisor
+    enabled: true
+    daemon_reload: true
+  when: ansible_service_mgr == "systemd"
