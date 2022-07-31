@@ -36,12 +36,6 @@ cadvisor_dirs:
 #### `cadvisor_options`
 
 - [options](https://github.com/google/cadvisor/blob/master/docs/runtime_options.md)
-- default:
-
-```yaml
-cadvisor_options:
-  - --whitelisted_container_labels=label.com.hashicorp.nomad.alloc_id
-```
 
 #### `cadvisor_port`
 
