@@ -17,6 +17,15 @@ for details.
 
 - version to use
 
+#### `cadvisor_checksum`
+
+- cadvisor binary checksum, you can get it from the [release page](https://github.com/google/cadvisor/releases)
+- example:
+
+```yaml
+cadvisor_checksum: "sha256:65109ea14132bce91bb2a92dc70248c705ba26fb2a7d55e295bf4192940a396c"
+```
+
 #### `cadvisor_dirs`
 
 - a map of directories to create

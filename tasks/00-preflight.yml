@@ -7,6 +7,15 @@
       - cadvisor_version | length
     quiet: true
 
+- name: check "cadvisor_checksum" variable
+  tags: always
+  assert:
+    that:
+      - cadvisor_checksum is defined
+      - cadvisor_checksum is string
+      - cadvisor_checksum | length
+    quiet: true
+
 - name: check "cadvisor_user" variable
   tags: always
   assert:
