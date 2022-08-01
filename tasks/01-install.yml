@@ -1,14 +1,16 @@
-- name: download cadvisor to localhost
-  become: false
-  run_once: true
-  delegate_to: localhost
+- name: download cadvisor
   get_url:
     url: "{{ _url }}"
-    dest: "{{ role_path }}/files/cadvisor"
+    dest: "/usr/bin/cadvisor"
+    owner: root
+    group: root
+    mode: 0555
+    checksum: "{{ cadvisor_checksum }}"
   register: _download
   until: _download is succeeded
   retries: 5
   delay: 2
+  notify: restart cadvisor
 
 - name: create cadvisor system group
   group:
@@ -39,15 +41,6 @@
   loop_control:
     loop_var: dir
     label: "{{ dir.key }}"
-
-- name: propagate cadvisor binary
-  copy:
-    src: "{{ role_path }}/files/cadvisor"
-    dest: "/usr/bin/cadvisor"
-    owner: root
-    group: root
-    mode: 0555
-  notify: restart cadvisor
 
 - name: create cadvisor service file
   tags: config
