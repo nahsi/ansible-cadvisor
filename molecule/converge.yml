@@ -2,8 +2,8 @@
   become: true
   hosts: all
   vars:
-    cadvisor_version: "0.39.3"
-    cadvisor_checksum: "sha256:f83194b0563bca7bae536ec68aeb5ead5663d7d4df2e64e660a8a9c80d447d9a"
+    cadvisor_version: "0.45.0"
+    cadvisor_checksum: "sha256:9a2a0b69f58d932855c0af23b847cb9de8f8c32264f66f9fb5dcc8f359f34ccd"
     cadvisor_options:
       - --docker_only=true
       - --store_container_labels=false
