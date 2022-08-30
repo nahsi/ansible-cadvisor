@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/nahsi/ansible-cadvisor/compare/v1.0.1...v1.0.2) (2022-08-30)
+
+
+### Bug Fixes
+
+* download url ([#19](https://github.com/nahsi/ansible-cadvisor/issues/19)) ([ec8ff7f](https://github.com/nahsi/ansible-cadvisor/commit/ec8ff7f13f1e35b119b4bf8c9c95f563c7ac859e))
+
 ## [1.0.1](https://github.com/nahsi/ansible-cadvisor/compare/v1.0.0...v1.0.1) (2022-08-01)
 
 
