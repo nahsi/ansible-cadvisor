@@ -1,5 +1,7 @@
 skip_handlers: false
 
+cadvisor_binary_url: ""
+
 cadvisor_user: "root"
 cadvisor_group: "root"
 

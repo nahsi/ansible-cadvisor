@@ -26,6 +26,10 @@ for details.
 cadvisor_checksum: "sha256:65109ea14132bce91bb2a92dc70248c705ba26fb2a7d55e295bf4192940a396c"
 ```
 
+#### `cadvisor_binary_url`
+
+- cadvisor binary url
+
 #### `cadvisor_dirs`
 
 - a map of directories to create
